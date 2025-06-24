@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <!-- White circle for the base -->
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@android:color/white"/>
+                    <size android:width="48dp" android:height="48dp"/>
+                </shape>
+            </item>
+            <!-- Black pentagons/hexagons (simplified for a basic football look) -->
+            <item android:left="14dp" android:top="2dp">
+                <shape android:shape="rectangle">
+                    <size android:width="10dp" android:height="10dp"/>
+                    <solid android:color="#333333"/>
+                    <corners android:radius="2dp"/>
+                    <rotate
+                        android:fromDegrees="45"
+                        android:pivotX="50%"
+                        android:pivotY="50%" />
+                </shape>
+            </item>
+            <item android:right="14dp" android:top="2dp">
+                <shape android:shape="rectangle">
+                    <size android:width="10dp" android:height="10dp"/>
+                    <solid android:color="#333333"/>
+                    <corners android:radius="2dp"/>
+                    <rotate
+                        android:fromDegrees="45"
+                        android:pivotX="50%"
+                        android:pivotY="50%" />
+                </shape>
+            </item>
+            <item android:top="14dp" android:left="2dp">
+                <shape android:shape="rectangle">
+                    <size android:width="10dp" android:height="10dp"/>
+                    <solid android:color="#333333"/>
+                    <corners android:radius="2dp"/>
+                    <rotate
+                        android:fromDegrees="45"
+                        android:pivotX="50%"
+                        android:pivotY="50%" />
+                </shape>
+            </item>
+            <item android:bottom="14dp" android:right="2dp">
+                <shape android:shape="rectangle">
+                    <size android:width="10dp" android:height="10dp"/>
+                    <solid android:color="#333333"/>
+                    <corners android:radius="2dp"/>
+                    <rotate
+                        android:fromDegrees="45"
+                        android:pivotX="50%"
+                        android:pivotY="50%" />
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

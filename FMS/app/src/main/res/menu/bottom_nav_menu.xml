@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_player_list"
+        android:icon="@drawable/ic_test"
+        android:title="Player List" />
+    <item
+        android:id="@+id/nav_build_squad"
+        android:icon="@drawable/ic_test"
+        android:title="Build Squad" />
+    <item
+        android:id="@+id/nav_match"
+        android:icon="@drawable/ic_test"
+        android:title="MATCH" />
+    <item
+        android:id="@+id/nav_manage_team"
+        android:icon="@drawable/ic_test"
+        android:title="Manage Team" />
+    <item
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_test"
+        android:title="Setting" />
+</menu>

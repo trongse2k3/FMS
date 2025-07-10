@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Item cho Dashboard Fragment -->
     <item
-        android:id="@+id/nav_player_list"
-        android:icon="@drawable/ic_test"
+        android:id="@+id/dashboardFragment"
+        android:icon="@drawable/img_icon_bottom_navigation_1"
+        android:title="Home" />
+    <!-- Item cho Player List Fragment -->
+    <item
+        android:id="@+id/playerListFragment"
+        android:icon="@drawable/img_icon_bottom_navigation_2"
         android:title="Player List" />
+    <!-- Item cho Build Squad Fragment -->
     <item
-        android:id="@+id/nav_build_squad"
-        android:icon="@drawable/ic_test"
+        android:id="@+id/buildSquadFragment"
+        android:icon="@drawable/img_icon_bottom_navigation_3"
         android:title="Build Squad" />
+    <!-- Item cho Match  -->
     <item
-        android:id="@+id/nav_match"
-        android:icon="@drawable/ic_test"
-        android:title="MATCH" />
+        android:id="@+id/matchFragment"
+        android:title="Match"
+        android:icon="@drawable/img_icon_bottom_navigation_4"/>
+    <!-- Item cho Manager Team Fragment -->
     <item
-        android:id="@+id/nav_manage_team"
-        android:icon="@drawable/ic_test"
-        android:title="Manage Team" />
-    <item
-        android:id="@+id/nav_setting"
-        android:icon="@drawable/ic_test"
-        android:title="Setting" />
-</menu>
+        android:id="@+id/managerTeamFragment"
+        android:icon="@drawable/img_icon_bottom_navigation_5"
+        android:title="Manager" />
+    <!-- Item cho Setting Fragment -->
+
+    </menu>

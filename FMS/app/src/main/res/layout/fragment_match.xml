@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F3F4F6"
+    tools:context=".MatchFragment">
+
+    <!-- Top Header: MATCH -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/match_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="16dp"
+    android:paddingVertical="12dp"
+    android:elevation="4dp"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent">
+
+    <View
+        android:id="@+id/line_left"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="#000000"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@id/tv_header_match"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_header_match"
+         />
+
+    <TextView
+        android:id="@+id/tv_header_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MATCH"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/line_right"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="#000000"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/tv_header_match"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_header_match"
+         />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Current Match Teams -->
+<LinearLayout
+android:id="@+id/current_match_container"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:gravity="center"
+android:layout_marginTop="32dp"
+android:layout_marginHorizontal="16dp"
+app:layout_constraintTop_toBottomOf="@id/match_header_container"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent">
+
+<!-- Home Team -->
+<androidx.cardview.widget.CardView
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:layout_marginEnd="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:contentPadding="16dp"
+    android:backgroundTint="#81C784">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/iv_home_team_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/img_logo_1"
+            android:contentDescription="Home Team Logo" />
+        <TextView
+            android:id="@+id/tv_home_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LION KING"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+<!-- VS placeholder -->
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginHorizontal="8dp">
+    <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/square_placeholder"
+        android:layout_marginBottom="4dp" />
+    <View
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/square_placeholder"
+        android:layout_marginTop="4dp" />
+</LinearLayout>
+
+<!-- Away Team -->
+<androidx.cardview.widget.CardView
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:layout_marginStart="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="4dp"
+    app:contentPadding="16dp"
+    android:backgroundTint="#EF9A9A">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/iv_away_team_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/img_logo_2"
+            android:contentDescription="Away Team Logo" />
+        <TextView
+            android:id="@+id/tv_away_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TOTER HAMBURGER"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
+
+</LinearLayout>
+
+    <!-- START Button -->
+<androidx.appcompat.widget.AppCompatButton
+android:id="@+id/btn_start_match"
+android:layout_width="200dp"
+android:layout_height="wrap_content"
+android:layout_marginTop="32dp"
+android:background="@drawable/rounded_red_button"
+android:text="START"
+android:textColor="#FFFFFF"
+android:textSize="20sp"
+android:textStyle="bold"
+android:paddingVertical="12dp"
+app:layout_constraintTop_toBottomOf="@id/current_match_container"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Match Schedule Header -->
+<TextView
+android:id="@+id/tv_match_schedule_header"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:text="MATCH SCHEDULE"
+android:textColor="#000000"
+android:textSize="20sp"
+android:textStyle="bold"
+android:layout_marginTop="40dp"
+android:layout_marginBottom="16dp"
+app:layout_constraintTop_toBottomOf="@id/btn_start_match"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Match Schedule RecyclerView -->
+<androidx.recyclerview.widget.RecyclerView
+android:id="@+id/rv_match_schedule"
+android:layout_width="match_parent"
+android:layout_height="0dp"
+android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="8dp"
+    android:paddingBottom="16dp"
+    android:clipToPadding="false"
+    app:layout_constraintTop_toBottomOf="@id/tv_match_schedule_header"
+    app:layout_constraintBottom_toBottomOf="parent"
+    tools:listitem="@layout/match_schedule_item" />
+
+    <!-- Match Log Card (Initially Hidden) -->
+<androidx.cardview.widget.CardView
+android:id="@+id/match_log_card"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_marginHorizontal="24dp"
+app:cardCornerRadius="16dp"
+app:cardElevation="8dp"
+app:contentPadding="16dp"
+android:backgroundTint="@android:color/white"
+android:visibility="gone"
+app:layout_constraintTop_toTopOf="parent"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CHI TIẾT TRẬN ĐẤU"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tv_match_log_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:lineSpacingExtra="4dp"
+        android:text="Các sự kiện trận đấu sẽ hiển thị ở đây..." />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_close_match_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="ĐÓNG"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:background="@drawable/rounded_green_button"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="10dp"
+        android:layout_gravity="center_horizontal" />
+
+</LinearLayout>
+</androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

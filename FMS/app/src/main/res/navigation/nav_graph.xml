@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <!-- Fragment cho Dashboard (Màn hình chính) -->
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.fms.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <!-- Fragment cho Player List -->
+    <fragment
+        android:id="@+id/playerListFragment"
+        android:name="com.example.fms.ListPlayerFragment"
+        android:label="Player List"
+        tools:layout="@layout/fragment_list_player" />
+
+<!--     Fragment cho Build Squad -->
+    <fragment
+        android:id="@+id/buildSquadFragment"
+        android:name="com.example.fms.BuildSquadFragment"
+        android:label="Build Squad"
+        tools:layout="@layout/fragment_build_squad" />
+    <!-- Activity cho Match (dùng cho Floating Action Button) -->
+    <!-- Fragment cho Match (Đây là tab "Match" trên Bottom Navigation) -->
+    <fragment
+        android:id="@+id/matchFragment"
+        android:name="com.example.fms.MatchFragment"
+        android:label="Match"
+        tools:layout="@layout/fragment_match" />
+
+<!--     Fragment cho Manager Team -->
+    <fragment
+        android:id="@+id/managerTeamFragment"
+        android:name="com.example.fms.ManagerTeamFragment"
+        android:label="Manager Team"
+        tools:layout="@layout/fragment_manager_team" />
+
+    <!-- Fragment cho Setting -->
+<!--    <fragment-->
+<!--        android:id="@+id/settingFragment"-->
+<!--        android:name="com.example.fms.SettingFragment"-->
+<!--        android:label="Setting"-->
+<!--        tools:layout="@layout/fragment_setting" />-->
+
+
+
+</navigation>

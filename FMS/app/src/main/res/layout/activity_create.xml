@@ -8,7 +8,6 @@
     tools:context=".CreateActivity"
     android:background="@drawable/a_create">
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -28,7 +27,6 @@
         android:layout_width="280dp"
         android:layout_height="50dp"
         android:background="@drawable/bg_boder_input"
-
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,15 +34,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.044"
-        tools:ignore="MissingConstraints" />
+        android:hint="Tên đội"
+        android:textColorHint="#CCCCCC"
+        android:textColor="#000000"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:inputType="textCapWords" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_ok"
+        android:id="@+id/btn_ok_initial"
         android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_button_ok"
         android:text="OK"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.132"
@@ -54,7 +58,6 @@
         tools:ignore="MissingConstraints" />
 
     <!-- Danh sách logo nhỏ cuộn ngang -->
-
     <ImageView
         android:id="@+id/imgMainLogo"
         android:visibility="gone"
@@ -64,26 +67,26 @@
         android:src="@drawable/logo_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.024" />
+        app:layout_constraintVertical_bias="0.024"
+        android:scaleType="fitCenter"/>
 
     <HorizontalScrollView
         android:id="@+id/logoScroll"
         android:visibility="gone"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/imgMainLogo"
-        android:layout_toEndOf="@id/imgMainLogo"
         android:background="#fff"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/imgMainLogo"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.053">
+        app:layout_constraintVertical_bias="0.053"
+        android:layout_marginStart="8dp">
 
         <LinearLayout
             android:id="@+id/logoContainer"
@@ -91,34 +94,70 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!-- Các logo sẽ được thêm hoặc lặp lại ở đây -->
             <ImageView
                 android:id="@+id/logo1"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/logo_1" />
+                android:src="@drawable/img_logo_1"
+                android:scaleType="fitCenter" />
 
             <ImageView
                 android:id="@+id/logo2"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/logo_1" />
+                android:src="@drawable/img_logo_2"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/logo3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/img_logo_3"
+                android:scaleType="fitCenter" />
 
             <ImageView
                 android:id="@+id/logo4"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/logo_1" />
+                android:src="@drawable/img_logo_4"
+                android:scaleType="fitCenter" />
 
             <ImageView
                 android:id="@+id/logo5"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/logo_1" />
+                android:src="@drawable/img_logo_5"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/logo6"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/img_logo_6"
+                android:scaleType="fitCenter" />
         </LinearLayout>
     </HorizontalScrollView>
 
+    <!-- Nút OK mới để xác nhận logo và chuyển màn hình -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save_and_continue"
+        android:layout_width="134dp"
+        android:layout_height="50dp"
+        android:background="@drawable/bg_button_ok"
+        android:text="Lưu và Chuyển"
+        android:textColor="#000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logoScroll"
+        app:layout_constraintVertical_bias="0.148"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

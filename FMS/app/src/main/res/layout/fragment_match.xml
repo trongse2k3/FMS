@@ -14,248 +14,261 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="16dp"
-    android:paddingVertical="12dp"
-    android:elevation="4dp"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent">
-
-    <View
-        android:id="@+id/line_left"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#000000"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toStartOf="@id/tv_header_match"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_header_match"
-         />
-
-    <TextView
-        android:id="@+id/tv_header_match"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MATCH"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:paddingVertical="12dp"
+        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:id="@+id/line_left"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="#1976D2"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_header_match"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_header_match"
+            app:layout_constraintBottom_toBottomOf="@id/tv_header_match" />
+
+        <TextView
+            android:id="@+id/tv_header_match"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TRẬN ĐẤU"
+            android:textColor="#1976D2"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/line_right"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:background="#1976D2"
+            android:layout_marginStart="16dp"
+            app:layout_constraintStart_toEndOf="@id/tv_header_match"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_header_match"
+            app:layout_constraintBottom_toBottomOf="@id/tv_header_match" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Current Match Teams -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/current_match_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="24dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        android:backgroundTint="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/match_header_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <!-- Home Team -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="4dp"
+                    android:layout_margin="4dp">
+                    <ImageView
+                        android:id="@+id/iv_home_team_logo"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:src="@drawable/img_logo_1"
+                        android:padding="8dp"
+                        android:contentDescription="Home Team Logo" />
+                </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_home_team_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LION KING"
+                    android:textColor="#1976D2"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+            <!-- VS Text -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VS"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#FF5722"
+                android:background="@drawable/rounded_yellow_background"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:layout_marginHorizontal="16dp" />
+
+            <!-- Away Team -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="4dp"
+                    android:layout_margin="4dp">
+                    <ImageView
+                        android:id="@+id/iv_away_team_logo"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:src="@drawable/img_logo_2"
+                        android:padding="8dp"
+                        android:contentDescription="Away Team Logo" />
+                </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tv_away_team_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOTER HAMBURGER"
+                    android:textColor="#F44336"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Simulate Match Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_simulate_match"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="32dp"
+        android:text="Bắt đầu trận đấu"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@drawable/rounded_green_button"
+        android:paddingVertical="12dp"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/current_match_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <View
-        android:id="@+id/line_right"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#000000"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toEndOf="@id/tv_header_match"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_header_match"
-         />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- Current Match Teams -->
-<LinearLayout
-android:id="@+id/current_match_container"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-android:gravity="center"
-android:layout_marginTop="32dp"
-android:layout_marginHorizontal="16dp"
-app:layout_constraintTop_toBottomOf="@id/match_header_container"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent">
-
-<!-- Home Team -->
-<androidx.cardview.widget.CardView
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:layout_marginEnd="16dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:contentPadding="16dp"
-    android:backgroundTint="#81C784">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-        <ImageView
-            android:id="@+id/iv_home_team_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/img_logo_1"
-            android:contentDescription="Home Team Logo" />
-        <TextView
-            android:id="@+id/tv_home_team_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LION KING"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
-
-<!-- VS placeholder -->
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:layout_marginHorizontal="8dp">
-    <View
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/square_placeholder"
-        android:layout_marginBottom="4dp" />
-    <View
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:background="@drawable/square_placeholder"
-        android:layout_marginTop="4dp" />
-</LinearLayout>
-
-<!-- Away Team -->
-<androidx.cardview.widget.CardView
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:layout_marginStart="16dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
-    app:contentPadding="16dp"
-    android:backgroundTint="#EF9A9A">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
-        <ImageView
-            android:id="@+id/iv_away_team_logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/img_logo_2"
-            android:contentDescription="Away Team Logo" />
-        <TextView
-            android:id="@+id/tv_away_team_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TOTER HAMBURGER"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
-
-</LinearLayout>
-
-    <!-- Simulate Match Button -->
-<androidx.appcompat.widget.AppCompatButton
-    android:id="@+id/btn_simulate_match"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginHorizontal="32dp"
-    android:text="Simulate Match"
-    android:textColor="#FFFFFF"
-    android:textSize="14sp"
-    android:textStyle="bold"
-    android:background="@drawable/rounded_green_button"
-    android:paddingVertical="10dp"
-    app:layout_constraintTop_toBottomOf="@id/current_match_container"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent" />
-
     <!-- Match Schedule Header -->
-<TextView
-android:id="@+id/tv_match_schedule_header"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="MATCH SCHEDULE"
-android:textColor="#000000"
-android:textSize="20sp"
-android:textStyle="bold"
-android:layout_marginTop="40dp"
-android:layout_marginBottom="16dp"
-app:layout_constraintTop_toBottomOf="@id/btn_simulate_match"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent" />
+    <androidx.cardview.widget.CardView
+        android:id="@+id/schedule_header_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="#1976D2"
+        app:layout_constraintTop_toBottomOf="@id/btn_simulate_match"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <TextView
+            android:id="@+id/tv_match_schedule_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LỊCH THI ĐẤU"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="12dp" />
+    </androidx.cardview.widget.CardView>
 
     <!-- Match Schedule RecyclerView -->
-<androidx.recyclerview.widget.RecyclerView
-android:id="@+id/rv_match_schedule"
-android:layout_width="match_parent"
-android:layout_height="0dp"
-android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="8dp"
-    android:paddingBottom="16dp"
-    android:clipToPadding="false"
-    app:layout_constraintTop_toBottomOf="@id/tv_match_schedule_header"
-    app:layout_constraintBottom_toBottomOf="parent"
-    tools:listitem="@layout/match_schedule_item" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_match_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:paddingBottom="72dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/schedule_header_card"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/match_schedule_item" />
 
     <!-- Match Log Card (Initially Hidden) -->
-<androidx.cardview.widget.CardView
-android:id="@+id/match_log_card"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginHorizontal="24dp"
-app:cardCornerRadius="16dp"
-app:cardElevation="8dp"
-app:contentPadding="16dp"
-android:backgroundTint="@android:color/white"
-android:visibility="gone"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintBottom_toBottomOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CHI TIẾT TRẬN ĐẤU"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="12dp" />
-
-    <TextView
-        android:id="@+id/tv_match_log_details"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/match_log_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#333333"
-        android:textSize="14sp"
-        android:lineSpacingExtra="4dp"
-        android:text="Các sự kiện trận đấu sẽ hiển thị ở đây..." />
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="72dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:contentPadding="16dp"
+        android:backgroundTint="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_close_match_log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="ĐÓNG"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:background="@drawable/rounded_green_button"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="10dp"
-        android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</LinearLayout>
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CHI TIẾT TRẬN ĐẤU"
+                android:textColor="#1976D2"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tv_match_log_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                android:lineSpacingExtra="4dp"
+                android:text="Các sự kiện trận đấu sẽ hiển thị ở đây..." />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_close_match_log"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="ĐÓNG"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:background="@drawable/rounded_green_button"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="10dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

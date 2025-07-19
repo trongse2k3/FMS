@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
-    <solid android:color="#3F51B5"/> <!-- Màu xanh đậm -->
+    <gradient
+        android:startColor="#3F51B5"
+        android:endColor="#303F9F"
+        android:type="linear" />
     <stroke android:width="2dp" android:color="#FFFFFF"/>
+    <padding
+        android:bottom="2dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp" />
 </shape>

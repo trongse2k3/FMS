@@ -9,145 +9,188 @@
     tools:context=".BuildSquadFragment">
 
     <!-- Custom Top Header for Build Squad -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/build_squad_header"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/build_squad_header_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:paddingVertical="12dp"
-        android:background="@drawable/rounded_player_list_header"
-        android:elevation="4dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="#1976D2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-
-        <View
-            android:id="@+id/left_dot"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:background="@drawable/black_circle"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <View
-            android:id="@+id/left_line"
-            android:layout_width="40dp"
-            android:layout_height="2dp"
-            android:background="#FFFFFF"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/left_dot"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <TextView
-            android:id="@+id/header_title"
-            android:layout_width="wrap_content"
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/build_squad_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BUILD SQUAD"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginHorizontal="16dp"
-            app:layout_constraintStart_toEndOf="@id/left_line"
-            app:layout_constraintEnd_toStartOf="@id/right_line"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:paddingVertical="12dp">
 
-        <View
-            android:id="@+id/right_line"
-            android:layout_width="40dp"
-            android:layout_height="2dp"
-            android:background="#FFFFFF"
-            android:layout_marginStart="16dp"
-            app:layout_constraintStart_toEndOf="@id/header_title"
-            app:layout_constraintEnd_toStartOf="@id/right_dot"
-            app:layout_constraintTop_toTopOf="@id/header_title"
-            app:layout_constraintBottom_toBottomOf="@id/header_title" />
+            <View
+                android:id="@+id/left_dot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/yellow_dot"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <View
-            android:id="@+id/right_dot"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-        android:background="@drawable/black_circle"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+            <View
+                android:id="@+id/left_line"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:background="#FFFFFF"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@id/left_dot"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="XÂY DỰNG ĐỘI HÌNH"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintStart_toEndOf="@id/left_line"
+                app:layout_constraintEnd_toStartOf="@id/right_line"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- Football Field Image -->
-    <ImageView
-        android:id="@+id/football_field_image"
+            <View
+                android:id="@+id/right_line"
+                android:layout_width="40dp"
+                android:layout_height="2dp"
+                android:background="#FFFFFF"
+                android:layout_marginStart="16dp"
+                app:layout_constraintStart_toEndOf="@id/header_title"
+                app:layout_constraintEnd_toStartOf="@id/right_dot"
+                app:layout_constraintTop_toTopOf="@id/header_title"
+                app:layout_constraintBottom_toBottomOf="@id/header_title" />
+
+            <View
+                android:id="@+id/right_dot"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/yellow_dot"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Football Field Container -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/field_container"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/img_san_bong"
-    android:scaleType="fitCenter"
-    android:contentDescription="Football Field"
-    android:layout_marginTop="16dp"
-    android:layout_marginHorizontal="16dp"
-    app:layout_constraintTop_toBottomOf="@id/build_squad_header"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintDimensionRatio="H,1.5:1" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintTop_toBottomOf="@id/build_squad_header_card"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <!-- Football Field Image -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <ImageView
+                android:id="@+id/football_field_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/img_san_bong"
+                android:scaleType="fitCenter"
+                android:contentDescription="Football Field"
+                android:adjustViewBounds="true" />
 
-    <!-- Container for Draggable Player Icons on Field -->
-    <FrameLayout
-        android:id="@+id/field_player_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@id/football_field_image"
-        app:layout_constraintBottom_toBottomOf="@id/football_field_image"
-        app:layout_constraintStart_toStartOf="@id/football_field_image"
-        app:layout_constraintEnd_toEndOf="@id/football_field_image"
-        android:background="#00000000" />
+            <!-- Container for Draggable Player Icons on Field -->
+            <FrameLayout
+                android:id="@+id/field_player_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#00000000" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- Squad Count and Confirm Button -->
-    <TextView
-        android:id="@+id/tv_squad_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Đội hình: 0/11"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/football_field_image"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_confirm_squad"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/squad_info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
-        android:text="XÁC NHẬN ĐỘI HÌNH"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:background="@drawable/rounded_green_button"
-        android:paddingVertical="12dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_squad_count"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/field_container"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+            
+            <TextView
+                android:id="@+id/tv_squad_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đội hình: 0/11"
+                android:textColor="#1976D2"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_confirm_squad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="XÁC NHẬN ĐỘI HÌNH"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/rounded_green_button"
+                android:paddingVertical="12dp"
+                android:elevation="4dp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <!-- List Divider -->
-    <TextView
-        android:id="@+id/list_header"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/list_header_card"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DANH SÁCH CẦU THỦ"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_confirm_squad"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="#4CAF50"
+        app:layout_constraintTop_toBottomOf="@id/squad_info_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <TextView
+            android:id="@+id/list_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DANH SÁCH CẦU THỦ"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:padding="12dp" />
+    </androidx.cardview.widget.CardView>
 
     <!-- RecyclerView for General Player List -->
     <androidx.recyclerview.widget.RecyclerView
@@ -158,7 +201,7 @@
         android:layout_marginHorizontal="16dp"
         android:paddingBottom="16dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/list_header"
+        app:layout_constraintTop_toBottomOf="@id/list_header_card"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/player_list_build_item" />
 

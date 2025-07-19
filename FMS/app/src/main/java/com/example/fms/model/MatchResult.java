@@ -132,6 +132,24 @@ public class MatchResult implements Serializable {
             if (onTarget) awayShotsOnTarget++;
         }
     }
+    
+    // Phương thức tăng số thẻ vàng
+    public void incrementYellowCards(boolean isHomeTeam) {
+        if (isHomeTeam) {
+            homeYellowCards++;
+        } else {
+            awayYellowCards++;
+        }
+    }
+    
+    // Phương thức tăng số thẻ đỏ
+    public void incrementRedCards(boolean isHomeTeam) {
+        if (isHomeTeam) {
+            homeRedCards++;
+        } else {
+            awayRedCards++;
+        }
+    }
 
     public String getResultText() {
         return homeTeam.getName() + " " + homeScore + " - " + awayScore + " " + awayTeam.getName();

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fms.R;
@@ -20,7 +21,7 @@ public class SquadPositionAdapter extends RecyclerView.Adapter<SquadPositionAdap
     private OnRemovePlayerClickListener removeListener; // New listener for removal
 
     // Interface to listen for player removal from squad position
-    public interface OnRemovePlayerClickListener { // Đảm bảo interface này là public
+    public interface OnRemovePlayerClickListener { 
         void onRemovePlayerClick(Player player);
     }
 
@@ -46,7 +47,21 @@ public class SquadPositionAdapter extends RecyclerView.Adapter<SquadPositionAdap
         Player player = playerList.get(position);
         holder.playerName.setText(player.getName());
         holder.playerOverall.setText(String.valueOf(player.getOverall()));
+        
+        // Cập nhật hiển thị ảnh với CardView mới
         holder.playerImage.setImageResource(player.getImageResId());
+
+        // Đặt màu sắc cho thanh bên trái dựa trên overall
+        int overall = player.getOverall();
+        int markerColor;
+        if (overall >= 80) {
+            markerColor = holder.itemView.getContext().getResources().getColor(android.R.color.holo_green_dark);
+        } else if (overall >= 70) {
+            markerColor = holder.itemView.getContext().getResources().getColor(android.R.color.holo_blue_dark);
+        } else {
+            markerColor = holder.itemView.getContext().getResources().getColor(android.R.color.holo_orange_dark);
+        }
+        holder.positionMarker.setBackgroundColor(markerColor);
 
         // Set click listener to remove player
         holder.itemView.setOnClickListener(v -> {
@@ -82,12 +97,14 @@ public class SquadPositionAdapter extends RecyclerView.Adapter<SquadPositionAdap
         TextView playerName;
         TextView playerOverall;
         ImageView playerImage;
+        View positionMarker;
 
         public SquadPlayerViewHolder(@NonNull View itemView) {
             super(itemView);
             playerName = itemView.findViewById(R.id.squad_player_name);
             playerOverall = itemView.findViewById(R.id.squad_player_overall);
             playerImage = itemView.findViewById(R.id.squad_player_image);
+            positionMarker = itemView.findViewById(R.id.position_marker);
         }
     }
 }

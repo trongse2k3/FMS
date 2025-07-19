@@ -104,7 +104,7 @@ public class Item implements Serializable {
         if (canUse()) {
             this.quantity--;
             if (this.quantity <= 0) {
-                this.isUsed = true; // Vẫn giữ logic này nếu cần
+                this.isUsed = true;
             }
         }
     }

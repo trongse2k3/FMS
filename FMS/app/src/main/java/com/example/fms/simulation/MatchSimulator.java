@@ -179,11 +179,37 @@ public class MatchSimulator {
                 break;
                 
             case YELLOW_CARD:
+                // Xử lý thẻ vàng
                 status.receiveYellowCard();
+                // Nếu là thẻ vàng thứ 2, cầu thủ sẽ bị truất quyền thi đấu
+                if (status.getYellowCardCount() >= 2) {
+                    status.setSubstituted(true); // Cầu thủ phải rời sân
+                    result.incrementRedCards(event.isHomeTeam());
+                    
+                    // Thêm sự kiện thẻ đỏ (do 2 thẻ vàng)
+                    MatchEvent redCardEvent = new MatchEvent(
+                        event.getMinute(),
+                        MatchEvent.EventType.RED_CARD,
+                        player,
+                        event.isHomeTeam()
+                    );
+                    redCardEvent.setDescription("Thẻ đỏ do nhận thẻ vàng thứ 2");
+                    result.addEvent(redCardEvent);
+                    
+                    if (listener != null) {
+                        listener.onEventGenerated(redCardEvent);
+                    }
+                } else {
+                    // Ghi nhận thẻ vàng
+                    result.incrementYellowCards(event.isHomeTeam());
+                }
                 break;
                 
             case RED_CARD:
+                // Xử lý thẻ đỏ
                 status.receiveRedCard();
+                status.setSubstituted(true); // Cầu thủ phải rời sân
+                result.incrementRedCards(event.isHomeTeam());
                 break;
                 
             case GOAL:

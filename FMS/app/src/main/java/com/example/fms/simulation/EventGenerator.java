@@ -12,6 +12,8 @@ public class EventGenerator {
     private List<String> tackleDescriptions;
     private List<String> injuryDescriptions;
     private List<String> cardDescriptions;
+    private List<String> yellowCardDescriptions;
+    private List<String> redCardDescriptions;
 
     public EventGenerator() {
         this.random = new Random();
@@ -87,7 +89,27 @@ public class EventGenerator {
             "Phạm lỗi chiến thuật!",
             "Lỗi cản phá bất hợp pháp!",
             "Phản ứng không đúng mực!",
-            "Lỗi nguy hiểm với đối thủ!"
+            "Lỗi nguy hiểm với đối thủ!",
+            "Lỗi xấu từ phía sau!",
+            "Tước bóng bằng cả hai chân!",
+            "Cản phá cơ hội ghi bàn rõ ràng!",
+            "Kéo áo đối phương!",
+            "Tác động mạnh vào người đối thủ!"
+        );
+
+        yellowCardDescriptions = Arrays.asList(
+            "Thẻ vàng cho cầu thủ đang đứng gần vị trí bóng!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi thô bạo!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi chiến thuật!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi cản phá bất hợp pháp!"
+        );
+
+        redCardDescriptions = Arrays.asList(
+            "Thẻ đỏ cho cầu thủ đang đứng gần vị trí bóng!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi thô bạo!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi chiến thuật!",
+            "Cầu thủ đang đứng gần vị trí bóng đã phạm lỗi cản phá bất hợp pháp!"
         );
     }
 
@@ -164,14 +186,25 @@ public class EventGenerator {
     }
 
     private MatchEvent.EventType generateNegativeEvent() {
-        MatchEvent.EventType[] negativeEvents = {
-            MatchEvent.EventType.INJURY,
-            MatchEvent.EventType.YELLOW_CARD,
-            MatchEvent.EventType.RED_CARD,
-            MatchEvent.EventType.MISS,
-            MatchEvent.EventType.FOUL
-        };
-        return negativeEvents[random.nextInt(negativeEvents.length)];
+        // Điều chỉnh xác suất để thẻ vàng và thẻ đỏ xuất hiện nhiều hơn
+        double rand = random.nextDouble();
+        
+        if (rand < 0.4) {
+            // 40% cơ hội là thẻ vàng
+            return MatchEvent.EventType.YELLOW_CARD;
+        } else if (rand < 0.55) {
+            // 15% cơ hội là thẻ đỏ
+            return MatchEvent.EventType.RED_CARD;
+        } else if (rand < 0.75) {
+            // 20% cơ hội là chấn thương
+            return MatchEvent.EventType.INJURY;
+        } else if (rand < 0.9) {
+            // 15% cơ hội là bỏ lỡ
+            return MatchEvent.EventType.MISS;
+        } else {
+            // 10% cơ hội là phạm lỗi
+            return MatchEvent.EventType.FOUL;
+        }
     }
 
     private MatchEvent.EventType generateNormalEvent() {
@@ -308,8 +341,9 @@ public class EventGenerator {
             case INJURY:
                 return getRandomDescription(injuryDescriptions);
             case YELLOW_CARD:
+                return getRandomDescription(yellowCardDescriptions);
             case RED_CARD:
-                return getRandomDescription(cardDescriptions);
+                return getRandomDescription(redCardDescriptions);
             default:
                 return "";
         }

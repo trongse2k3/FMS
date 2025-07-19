@@ -1,10 +1,14 @@
 package com.example.fms;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -15,7 +19,9 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -30,8 +36,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.HashMap;
 import java.util.Map;
 
-// MainActivity triển khai interface OnMoneyUpdateListener từ ListPlayerFragment
-public class MainActivity extends AppCompatActivity implements ListPlayerFragment.OnMoneyUpdateListener {
+// MainActivity triển khai interface OnMoneyUpdateListener từ ListPlayerFragment và ShopFragment
+public class MainActivity extends AppCompatActivity implements ListPlayerFragment.OnMoneyUpdateListener, ShopFragment.OnMoneyUpdateListener {
 
     private static final String TAG = "MainActivity";
     private NavController navController;
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements ListPlayerFragmen
     private FloatingActionButton fabMatch; // Khai báo FloatingActionButton
     private ImageButton btnLogout; // Khai báo nút đăng xuất
     private Button btnTestItem; // Khai báo nút test item
+    private WindowInsetsControllerCompat windowInsetsController; // Khai báo biến điều khiển Insets
 
     private static final String PREFS_NAME = "TeamPrefs";
     private static final String KEY_TEAM_NAME = "teamName";
@@ -54,12 +61,34 @@ public class MainActivity extends AppCompatActivity implements ListPlayerFragmen
     private String teamName;
     private int teamLogoId;
     private int currentMoney;
+    
+    // BroadcastReceiver để nhận thông báo cập nhật tiền
+    private BroadcastReceiver moneyUpdateReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("com.example.fms.MONEY_UPDATED".equals(intent.getAction())) {
+                int updatedMoney = intent.getIntExtra("updatedMoney", -1);
+                if (updatedMoney != -1) {
+                    // Cập nhật số tiền trong MainActivity
+                    onMoneyUpdated(updatedMoney);
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        
+        // Thiết lập chế độ toàn màn hình
+        setupFullScreen();
+        
         setContentView(R.layout.activity_main);
+        
+        // Đăng ký BroadcastReceiver để nhận thông báo cập nhật tiền
+        IntentFilter intentFilter = new IntentFilter("com.example.fms.MONEY_UPDATED");
+        registerReceiver(moneyUpdateReceiver, intentFilter, Context.RECEIVER_NOT_EXPORTED);
         
         userManager = new UserManager();
         
@@ -71,10 +100,37 @@ public class MainActivity extends AppCompatActivity implements ListPlayerFragmen
         
         currentUser = userManager.getCurrentUser();
 
-        // Set padding cho các hệ thống insets (status bar, nav bar)
+        // Xử lý edge-to-edge display
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            
+            // Thêm padding cho top bar để tránh bị che bởi status bar
+            View topBar = findViewById(R.id.top_bar_container);
+            if (topBar != null) {
+                // Chỉ thêm padding top, giữ nguyên các padding khác
+                int paddingTop = systemBars.top + 8; // 8dp là giá trị margin_top ban đầu
+                topBar.setPadding(
+                    topBar.getPaddingLeft(),
+                    paddingTop,
+                    topBar.getPaddingRight(),
+                    topBar.getPaddingBottom()
+                );
+                
+                // Cập nhật lại margin top về 0 vì đã xử lý trong padding
+                ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) topBar.getLayoutParams();
+                params.topMargin = 0;
+                topBar.setLayoutParams(params);
+            }
+            
+            // Thêm padding cho bottom navigation để tránh bị che bởi navigation bar
+            View bottomNav = findViewById(R.id.bottom_nav_view);
+            if (bottomNav != null) {
+                bottomNav.setPadding(0, 0, 0, systemBars.bottom);
+                // Đảm bảo bottom nav hiển thị đúng
+                bottomNav.setElevation(12);
+                bottomNav.bringToFront();
+            }
+            
             return insets;
         });
 
@@ -120,6 +176,31 @@ public class MainActivity extends AppCompatActivity implements ListPlayerFragmen
         NavigationUI.setupWithNavController(bottomNavView, navController);
     }
     
+    // Thiết lập chế độ toàn màn hình
+    private void setupFullScreen() {
+        // Đặt ứng dụng ở chế độ toàn màn hình
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        
+        // Lấy điều khiển WindowInsets để ẩn thanh trạng thái và thanh điều hướng
+        windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        if (windowInsetsController != null) {
+            // Ẩn thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+            // Đặt hành vi khi vuốt màn hình - hiện thanh điều hướng tạm thời
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && windowInsetsController != null) {
+            // Khi cửa sổ được focus lại, ẩn lại thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+        }
+    }
+
     // Phương thức xử lý đăng xuất
     private void logoutUser() {
         // Đăng xuất người dùng từ Firebase
@@ -338,5 +419,14 @@ public class MainActivity extends AppCompatActivity implements ListPlayerFragmen
         Intent intent = new Intent(this, AuthActivity.class);
         startActivity(intent);
         finish();
+    }
+    
+    @Override
+    protected void onDestroy() {
+        // Hủy đăng ký BroadcastReceiver khi Activity bị hủy
+        if (moneyUpdateReceiver != null) {
+            unregisterReceiver(moneyUpdateReceiver);
+        }
+        super.onDestroy();
     }
 }

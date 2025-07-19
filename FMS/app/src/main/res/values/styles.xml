@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style cho text của Bottom Navigation -->
+    <style name="BottomNavigationTextStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <!-- Style cho Bottom Navigation -->
+    <style name="BottomNavigationStyle">
+        <item name="itemTextAppearanceActive">@style/BottomNavigationTextStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationTextStyle</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="itemBackground">@drawable/bottom_nav_item_background</item>
+        <item name="itemIconSize">24dp</item>
+        <item name="itemPaddingTop">8dp</item>
+        <item name="itemPaddingBottom">8dp</item>
+    </style>
+</resources> 

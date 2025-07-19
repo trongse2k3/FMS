@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fms.R;
@@ -56,9 +57,15 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
 
         if (status != null && !status.isFit()) {
             // Cầu thủ có vấn đề (chấn thương hoặc treo giò)
-            holder.playerStatus.setVisibility(View.VISIBLE);
+            holder.statusContainer.setVisibility(View.VISIBLE);
             holder.playerStatus.setText(status.getShortDescription());
-            holder.playerStatus.setTextColor(status.isSuspended() ? Color.RED : Color.MAGENTA);
+            
+            // Đặt màu nền cho container trạng thái
+            if (status.isSuspended()) {
+                holder.statusContainer.setCardBackgroundColor(Color.parseColor("#FFEBEE")); // Đỏ nhạt
+            } else {
+                holder.statusContainer.setCardBackgroundColor(Color.parseColor("#FCE4EC")); // Hồng nhạt
+            }
 
             holder.btnAddPlayer.setVisibility(View.GONE);
             holder.btnManagePlayer.setVisibility(View.VISIBLE);
@@ -70,7 +77,7 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
             });
         } else {
             // Cầu thủ bình thường
-            holder.playerStatus.setVisibility(View.GONE);
+            holder.statusContainer.setVisibility(View.GONE);
             holder.btnAddPlayer.setVisibility(View.VISIBLE);
             holder.btnManagePlayer.setVisibility(View.GONE);
 
@@ -91,6 +98,7 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
         TextView playerName, playerOverall, playerPos, playerStatus;
         ImageView playerImage;
         AppCompatButton btnAddPlayer, btnManagePlayer;
+        CardView statusContainer;
 
         public PlayerBuildViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +109,7 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
             playerImage = itemView.findViewById(R.id.player_image);
             btnAddPlayer = itemView.findViewById(R.id.btn_add_player);
             btnManagePlayer = itemView.findViewById(R.id.btn_manage_player);
+            statusContainer = itemView.findViewById(R.id.status_container);
         }
     }
 }

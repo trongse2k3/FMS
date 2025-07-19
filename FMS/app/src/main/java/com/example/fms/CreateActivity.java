@@ -17,7 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.fms.firebase.UserManager;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +36,7 @@ public class CreateActivity extends AppCompatActivity {
     private HorizontalScrollView logoScroll;
     private TextView tvInstruction;
     private AppCompatButton btnSaveAndContinue;
+    private WindowInsetsControllerCompat windowInsetsController;
 
     private int selectedLogoResId = R.drawable.logo_1;
     private int selectedLogoId = 1; // ID số của logo (1-6)
@@ -52,6 +55,10 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        
+        // Thiết lập chế độ toàn màn hình
+        setupFullScreen();
+        
         setContentView(R.layout.activity_create);
         
         // Khởi tạo UserManager và lấy người dùng hiện tại
@@ -154,6 +161,31 @@ public class CreateActivity extends AppCompatActivity {
                 Toast.makeText(CreateActivity.this, "Vui lòng nhập tên đội và chọn logo!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    
+    // Thiết lập chế độ toàn màn hình
+    private void setupFullScreen() {
+        // Đặt ứng dụng ở chế độ toàn màn hình
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        
+        // Lấy điều khiển WindowInsets để ẩn thanh trạng thái và thanh điều hướng
+        windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        if (windowInsetsController != null) {
+            // Ẩn thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+            // Đặt hành vi khi vuốt màn hình - hiện thanh điều hướng tạm thời
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && windowInsetsController != null) {
+            // Khi cửa sổ được focus lại, ẩn lại thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+        }
     }
     
     // Phương thức lưu dữ liệu đội bóng lên Firestore

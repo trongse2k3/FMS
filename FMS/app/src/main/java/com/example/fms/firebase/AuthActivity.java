@@ -10,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.fms.CreateActivity;
 import com.example.fms.MainActivity;
@@ -27,10 +30,15 @@ public class AuthActivity extends AppCompatActivity {
     
     private UserManager userManager;
     private boolean isLoginMode = true;
+    private WindowInsetsControllerCompat windowInsetsController;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Thiết lập chế độ toàn màn hình
+        setupFullScreen();
+        
         setContentView(R.layout.activity_auth);
         
         userManager = new UserManager();
@@ -59,6 +67,31 @@ public class AuthActivity extends AppCompatActivity {
             isLoginMode = !isLoginMode;
             updateUiForMode();
         });
+    }
+    
+    // Thiết lập chế độ toàn màn hình
+    private void setupFullScreen() {
+        // Đặt ứng dụng ở chế độ toàn màn hình
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        
+        // Lấy điều khiển WindowInsets để ẩn thanh trạng thái và thanh điều hướng
+        windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        if (windowInsetsController != null) {
+            // Ẩn thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+            // Đặt hành vi khi vuốt màn hình - hiện thanh điều hướng tạm thời
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && windowInsetsController != null) {
+            // Khi cửa sổ được focus lại, ẩn lại thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+        }
     }
     
     private void updateUiForMode() {

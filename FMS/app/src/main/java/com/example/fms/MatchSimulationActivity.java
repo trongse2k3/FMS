@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +18,7 @@ import com.example.fms.simulation.*;
 import com.example.fms.adapter.MatchEventAdapter;
 
 import java.util.*;
+import android.content.Intent;
 
 /**
  * MatchSimulationActivity - Demo hệ thống mô phỏng trận đấu
@@ -34,6 +38,7 @@ public class MatchSimulationActivity extends AppCompatActivity implements MatchS
     private RecyclerView rvEvents;
     private Button btnStartMatch, btnQuickSimulation;
     private ProgressBar pbMatchProgress;
+    private WindowInsetsControllerCompat windowInsetsController;
     
     // Data
     private MatchSimulator matchSimulator;
@@ -55,6 +60,10 @@ public class MatchSimulationActivity extends AppCompatActivity implements MatchS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        // Thiết lập chế độ toàn màn hình
+        setupFullScreen();
+        
         setContentView(R.layout.activity_match_simulation);
         
         initViews();
@@ -62,6 +71,31 @@ public class MatchSimulationActivity extends AppCompatActivity implements MatchS
         initRecyclerView();
         setupListeners();
         loadTeamsAndPlayers();
+    }
+    
+    // Thiết lập chế độ toàn màn hình
+    private void setupFullScreen() {
+        // Đặt ứng dụng ở chế độ toàn màn hình
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+        
+        // Lấy điều khiển WindowInsets để ẩn thanh trạng thái và thanh điều hướng
+        windowInsetsController = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+        if (windowInsetsController != null) {
+            // Ẩn thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+            // Đặt hành vi khi vuốt màn hình - hiện thanh điều hướng tạm thời
+            windowInsetsController.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+        }
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && windowInsetsController != null) {
+            // Khi cửa sổ được focus lại, ẩn lại thanh trạng thái và thanh điều hướng
+            windowInsetsController.hide(WindowInsetsCompat.Type.systemBars());
+        }
     }
     
     private void initViews() {
@@ -440,6 +474,9 @@ public class MatchSimulationActivity extends AppCompatActivity implements MatchS
                     @Override
                     public void onMatchSaved(String matchId) {
                         Toast.makeText(MatchSimulationActivity.this, "Đã lưu lịch sử trận đấu!", Toast.LENGTH_SHORT).show();
+                        
+                        // Lấy số tiền hiện tại của người dùng sau khi nhận thưởng
+                        updateMoneyInMainActivity();
                     }
                     @Override
                     public void onMatchDeleted(String matchId) {
@@ -450,6 +487,36 @@ public class MatchSimulationActivity extends AppCompatActivity implements MatchS
                         Toast.makeText(MatchSimulationActivity.this, "Lỗi lưu lịch sử trận đấu! " + error, Toast.LENGTH_SHORT).show();
                     }
                 });
+        }
+    }
+    
+    // Phương thức để cập nhật số tiền trong MainActivity
+    private void updateMoneyInMainActivity() {
+        String userId = userManager.getCurrentUserId();
+        if (userId != null) {
+            userManager.getUserData(userId, new UserManager.UserDataCallback() {
+                @Override
+                public void onSuccess(Map<String, Object> userData) {
+                    if (userData.containsKey("money")) {
+                        int updatedMoney = 0;
+                        if (userData.get("money") instanceof Long) {
+                            updatedMoney = ((Long) userData.get("money")).intValue();
+                        } else if (userData.get("money") instanceof Integer) {
+                            updatedMoney = (Integer) userData.get("money");
+                        }
+                        
+                        // Gửi broadcast để cập nhật tiền trong MainActivity
+                        Intent intent = new Intent("com.example.fms.MONEY_UPDATED");
+                        intent.putExtra("updatedMoney", updatedMoney);
+                        sendBroadcast(intent);
+                    }
+                }
+                
+                @Override
+                public void onFailure(Exception e) {
+                    Log.e(TAG, "Lỗi khi lấy số tiền cập nhật", e);
+                }
+            });
         }
     }
     

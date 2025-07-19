@@ -38,8 +38,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ListView;
 
-// BuildSquadFragment implements PlayerBuildAdapter.OnAddPlayerClickListener
+import com.example.fms.adapter.ItemDialogAdapter;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+
 public class BuildSquadFragment extends Fragment implements PlayerBuildAdapter.OnAddPlayerClickListener, PlayerBuildAdapter.OnManagePlayerClickListener {
 
     private static final String TAG = "BuildSquadFragment";
@@ -292,22 +301,100 @@ public class BuildSquadFragment extends Fragment implements PlayerBuildAdapter.O
     private void showUseItemDialog(Player player, List<Item> items) {
         if (getContext() == null) return;
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Sử dụng vật phẩm cho " + player.getName());
+        // Sử dụng Dialog với custom layout thay vì AlertDialog.Builder
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_use_item);
         
-        if (items.isEmpty()) {
-            builder.setMessage("Bạn không có vật phẩm nào phù hợp.");
-            builder.setPositiveButton("OK", null);
-        } else {
-            String[] itemNames = items.stream().map(Item::getName).toArray(String[]::new);
-            builder.setItems(itemNames, (dialog, which) -> {
-                Item selectedItem = items.get(which);
-                useItemOnPlayer(player, selectedItem);
-            });
-            builder.setNegativeButton("Hủy", null);
+        // Lấy các view từ layout
+        TextView titleView = dialog.findViewById(R.id.dialog_title);
+        TextView playerInfoView = dialog.findViewById(R.id.dialog_player_info);
+        TextView playerStatusView = dialog.findViewById(R.id.dialog_player_status);
+        TextView emptyTextView = dialog.findViewById(R.id.empty_text);
+        ListView itemListView = dialog.findViewById(R.id.item_list);
+        Button cancelButton = dialog.findViewById(R.id.btn_cancel);
+        Button useButton = dialog.findViewById(R.id.btn_use);
+        
+        // Set tiêu đề và thông tin cầu thủ
+        titleView.setText("Sử dụng vật phẩm cho " + player.getName());
+        playerInfoView.setText("Cầu thủ: " + player.getName() + " (" + player.getPosition() + ")");
+        
+        PlayerStatus status = player.getStatus();
+        if (status.getInjuryType() != PlayerStatus.InjuryType.NONE) {
+            playerStatusView.setText("Trạng thái: " + status.getInjuryType().getDescription());
+            playerStatusView.setTextColor(Color.parseColor("#F44336")); // Red
+        } else if (status.isSuspended()) {
+            playerStatusView.setText("Trạng thái: Bị treo giò " + status.getMatchesSupended() + " trận");
+            playerStatusView.setTextColor(Color.parseColor("#FF9800")); // Orange
         }
         
-        builder.create().show();
+        // Xử lý danh sách vật phẩm
+        if (items.isEmpty()) {
+            emptyTextView.setVisibility(View.VISIBLE);
+            itemListView.setVisibility(View.GONE);
+            useButton.setEnabled(false);
+        } else {
+            emptyTextView.setVisibility(View.GONE);
+            itemListView.setVisibility(View.VISIBLE);
+            
+            // Tạo adapter cho danh sách item
+            ItemDialogAdapter adapter = new ItemDialogAdapter(getContext(), items);
+            itemListView.setAdapter(adapter);
+            
+            // Biến để lưu item được chọn
+            final int[] selectedPosition = {-1};
+            
+            // Xử lý chọn item
+            itemListView.setOnItemClickListener((parent, view, position, id) -> {
+                // Bỏ highlight ở item trước đó (nếu có)
+                if (selectedPosition[0] != -1 && selectedPosition[0] < parent.getChildCount()) {
+                    View previousSelectedView = parent.getChildAt(selectedPosition[0]);
+                    previousSelectedView.setBackgroundColor(Color.TRANSPARENT);
+                    previousSelectedView.clearAnimation();
+                }
+                
+                // Highlight item mới chọn
+                view.setBackgroundColor(Color.parseColor("#E3F2FD")); // Light Blue
+                Animation highlightAnimation = AnimationUtils.loadAnimation(getContext(), R.anim.item_highlight);
+                view.startAnimation(highlightAnimation);
+                
+                // Áp dụng elevation animator
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    android.animation.ObjectAnimator elevationAnimator = 
+                            (android.animation.ObjectAnimator) android.animation.AnimatorInflater.loadAnimator(
+                            getContext(), R.animator.item_highlight_animator);
+                    elevationAnimator.setTarget(view);
+                    elevationAnimator.start();
+                }
+                
+                selectedPosition[0] = position;
+                
+                // Enable nút sử dụng
+                useButton.setEnabled(true);
+            });
+            
+            // Xử lý khi nhấn nút sử dụng
+            useButton.setEnabled(false); // Mặc định disable cho đến khi chọn item
+            useButton.setOnClickListener(v -> {
+                if (selectedPosition[0] != -1) {
+                    Item selectedItem = items.get(selectedPosition[0]);
+                    useItemOnPlayer(player, selectedItem);
+                    dialog.dismiss();
+                }
+            });
+        }
+        
+        // Xử lý nút hủy
+        cancelButton.setOnClickListener(v -> dialog.dismiss());
+        
+        // Hiển thị dialog và set kích thước
+        Window window = dialog.getWindow();
+        if (window != null) {
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        
+        dialog.show();
     }
 
     private void useItemOnPlayer(Player player, Item item) {

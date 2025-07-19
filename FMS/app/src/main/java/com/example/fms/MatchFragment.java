@@ -188,6 +188,16 @@ public class MatchFragment extends Fragment {
         }
 
         tvMatchLogDetails.setText(logBuilder.toString());
+        
+        // Đảm bảo card không chồng lên bottom navigation
+        if (matchLogCard.getParent() instanceof ViewGroup) {
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) matchLogCard.getLayoutParams();
+            if (params != null) {
+                params.bottomMargin = 150; // Thêm margin để tránh chồng lên bottom navigation
+                matchLogCard.setLayoutParams(params);
+            }
+        }
+        
         matchLogCard.setVisibility(View.VISIBLE);
     }
 

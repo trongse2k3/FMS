@@ -3,6 +3,8 @@ package com.example.fms;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,13 +54,26 @@ public class ShopItemAdapter extends RecyclerView.Adapter<ShopItemAdapter.ItemVi
         holder.tvPrice.setText(type.getPrice() + "$" );
         int qty = userItemQuantities.getOrDefault(type, 0);
         holder.tvQuantity.setText("Sở hữu: " + qty);
+        
         // Set icon
         int iconResId = getIconResId(holder.imgIcon, type.getIconResource());
         if (iconResId != 0) holder.imgIcon.setImageResource(iconResId);
         else holder.imgIcon.setImageResource(R.drawable.ic_list_placeholder);
+        
+        // Thêm hiệu ứng khi nhấn nút mua
         holder.btnBuy.setOnClickListener(v -> {
-            if (buyClickListener != null) buyClickListener.onBuy(type);
+            Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.item_pulse);
+            holder.btnBuy.startAnimation(animation);
+            
+            if (buyClickListener != null) {
+                buyClickListener.onBuy(type);
+            }
         });
+        
+        // Thêm hiệu ứng khi load item vào danh sách
+        Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.item_pulse);
+        animation.setStartOffset(position * 50); // Độ trễ giữa các item
+        holder.itemView.startAnimation(animation);
     }
 
     @Override

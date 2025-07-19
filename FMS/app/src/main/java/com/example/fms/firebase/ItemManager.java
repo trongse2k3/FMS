@@ -76,6 +76,8 @@ public class ItemManager {
                         if (document.exists()) {
                             Item item = createItemFromDocument(document);
                             if (item != null && item.canUse() && item.getOwnerId().equals(userId)) {
+                                // Giảm số lượng item và áp dụng hiệu ứng
+                                item.use();
                                 return applyItemEffect(item, targetPlayerId);
                             }
                         }
@@ -127,8 +129,7 @@ public class ItemManager {
                 // Cập nhật trạng thái cầu thủ
                 updatePlayerStatus(targetPlayerId, playerStatus);
                 
-                // Đánh dấu item đã sử dụng
-                item.use();
+                // Cập nhật trạng thái item đã sử dụng (giảm số lượng)
                 updateItemUsage(item);
                 
                 // Lưu lịch sử sử dụng
@@ -190,14 +191,19 @@ public class ItemManager {
     private void updateItemUsage(Item item) {
         Map<String, Object> updates = new HashMap<>();
         updates.put("quantity", item.getQuantity());
-        updates.put("isUsed", item.isUsed());
+        
+        // Nếu quantity = 0 thì đánh dấu là đã sử dụng
+        if (item.getQuantity() <= 0) {
+            updates.put("isUsed", true);
+        }
+        
         updates.put("lastUsed", System.currentTimeMillis());
         
         db.collection(COLLECTION_USER_ITEMS)
                 .document(item.getItemId())
                 .update(updates)
                 .addOnSuccessListener(aVoid -> 
-                    Log.d(TAG, "Item usage updated: " + item.getItemId()))
+                    Log.d(TAG, "Item usage updated: " + item.getItemId() + ", remaining: " + item.getQuantity()))
                 .addOnFailureListener(e -> 
                     Log.e(TAG, "Error updating item usage", e));
     }
@@ -225,25 +231,60 @@ public class ItemManager {
      * Thêm item cho user (khi mua hoặc tặng)
      */
     public Task<Boolean> addItemToUser(String userId, Item.ItemType itemType, int quantity) {
-        Item item = new Item(
-            itemType,
-            quantity,
-            userId
-        );
-        item.setItemId(UUID.randomUUID().toString());
-        
-        Map<String, Object> itemData = createItemDocument(item);
-        
+        // Kiểm tra xem user đã có item cùng loại chưa
         return db.collection(COLLECTION_USER_ITEMS)
-                .document(item.getItemId())
-                .set(itemData)
-                .continueWith(task -> {
+                .whereEqualTo("ownerId", userId)
+                .whereEqualTo("itemType", itemType.name())
+                .whereEqualTo("isUsed", false)
+                .get()
+                .continueWithTask(task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Item added to user: " + userId + ", type: " + itemType);
-                        return true;
+                        QuerySnapshot querySnapshot = task.getResult();
+                        if (!querySnapshot.isEmpty()) {
+                            // User đã có item cùng loại, cập nhật số lượng
+                            DocumentSnapshot document = querySnapshot.getDocuments().get(0);
+                            int currentQuantity = document.getLong("quantity").intValue();
+                            int newQuantity = currentQuantity + quantity;
+                            
+                            return db.collection(COLLECTION_USER_ITEMS)
+                                    .document(document.getId())
+                                    .update("quantity", newQuantity)
+                                    .continueWith(updateTask -> {
+                                        if (updateTask.isSuccessful()) {
+                                            Log.d(TAG, "Item quantity updated for user: " + userId + ", type: " + itemType + ", new quantity: " + newQuantity);
+                                            return true;
+                                        } else {
+                                            Log.e(TAG, "Error updating item quantity", updateTask.getException());
+                                            return false;
+                                        }
+                                    });
+                        } else {
+                            // User chưa có item loại này, tạo mới
+                            Item item = new Item(
+                                itemType,
+                                quantity,
+                                userId
+                            );
+                            item.setItemId(UUID.randomUUID().toString());
+                            
+                            Map<String, Object> itemData = createItemDocument(item);
+                            
+                            return db.collection(COLLECTION_USER_ITEMS)
+                                    .document(item.getItemId())
+                                    .set(itemData)
+                                    .continueWith(setTask -> {
+                                        if (setTask.isSuccessful()) {
+                                            Log.d(TAG, "New item added to user: " + userId + ", type: " + itemType);
+                                            return true;
+                                        } else {
+                                            Log.e(TAG, "Error adding new item to user", setTask.getException());
+                                            return false;
+                                        }
+                                    });
+                        }
                     } else {
-                        Log.e(TAG, "Error adding item to user", task.getException());
-                        return false;
+                        Log.e(TAG, "Error checking existing items", task.getException());
+                        return Tasks.forResult(false);
                     }
                 });
     }

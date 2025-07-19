@@ -12,6 +12,7 @@ local.properties
 captures/
 .externalNativeBuild/
 .cxx/
+*.aab
 *.apk
 output-metadata.json
 
@@ -31,3 +32,10 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+#env var
+.env
+
+# Ignore Firebase service account key
+
+fmsim-745b3-firebase-adminsdk-fbsvc-0d4f2c107d.json

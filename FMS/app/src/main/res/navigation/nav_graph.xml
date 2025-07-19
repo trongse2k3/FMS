@@ -10,7 +10,11 @@
         android:id="@+id/dashboardFragment"
         android:name="com.example.fms.DashboardFragment"
         android:label="Dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
 
     <!-- Fragment cho Player List -->
     <fragment
@@ -19,7 +23,7 @@
         android:label="Player List"
         tools:layout="@layout/fragment_list_player" />
 
-<!--     Fragment cho Build Squad -->
+    <!--     Fragment cho Build Squad -->
     <fragment
         android:id="@+id/buildSquadFragment"
         android:name="com.example.fms.BuildSquadFragment"
@@ -33,12 +37,19 @@
         android:label="Match"
         tools:layout="@layout/fragment_match" />
 
-<!--     Fragment cho Manager Team -->
+    <!--     Fragment cho Manager Team -->
     <fragment
         android:id="@+id/managerTeamFragment"
         android:name="com.example.fms.ManagerTeamFragment"
         android:label="Manager Team"
         tools:layout="@layout/fragment_manager_team" />
+
+    <!-- Fragment cho Shop -->
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.example.fms.ShopFragment"
+        android:label="Shop"
+        tools:layout="@layout/fragment_shop" />
 
     <!-- Fragment cho Setting -->
 <!--    <fragment-->
@@ -46,7 +57,5 @@
 <!--        android:name="com.example.fms.SettingFragment"-->
 <!--        android:label="Setting"-->
 <!--        tools:layout="@layout/fragment_setting" />-->
-
-
 
 </navigation>

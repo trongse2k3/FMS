@@ -1,0 +1,111 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    function isResourceOwner() {
+      return request.auth.uid == resource.data.userId;
+    }
+    function isResourceOwnerField(field) {
+      return request.auth.uid == resource.data[field];
+    }
+    function isPlayerOwner(playerId) {
+      return get(/databases/$(database)/documents/players/$(playerId)).data.userId == request.auth.uid;
+    }
+
+    // USERS COLLECTION
+    match /users/{userId} {
+      allow read, write: if isAuthenticated() && isOwner(userId);
+    }
+
+    // PLAYERS COLLECTION (cầu thủ user sở hữu)
+    match /players/{playerId} {
+      allow read, write: if isAuthenticated() && (
+        isResourceOwner() ||
+        isResourceOwnerField("ownerId")
+      );
+    }
+
+    // PLAYER STATUS COLLECTION (trạng thái cầu thủ user sở hữu)
+    match /player_status/{playerId} {
+      allow read: if isAuthenticated();
+      // Chỉ user sở hữu cầu thủ mới được ghi trạng thái
+      allow write: if isAuthenticated() && (
+        // Document phải có trường userId đúng với user hiện tại
+        (request.resource.data.userId == request.auth.uid)
+      );
+    }
+
+    // MARKET PLAYERS COLLECTION (readonly)
+    match /market_players/{playerId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // MATCHES COLLECTION
+    match /matches/{matchId} {
+      allow read, write: if isAuthenticated() && (
+        isResourceOwner() ||
+        isResourceOwnerField("homeTeamUserId") ||
+        isResourceOwnerField("awayTeamUserId")
+      );
+    }
+
+    // MATCH HISTORY COLLECTION
+    match /match_history/{historyId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (
+        (request.resource.data.userId == request.auth.uid) ||
+        (request.resource.data.homeTeamUserId == request.auth.uid) ||
+        (request.resource.data.awayTeamUserId == request.auth.uid)
+      );
+    }
+
+    // USER MATCHES COLLECTION
+    match /user_matches/{userId} {
+      allow read, write: if isAuthenticated() && isOwner(userId);
+    }
+
+    // USER ITEMS COLLECTION
+    match /user_items/{itemId} {
+      allow read, write: if isAuthenticated() && (
+        (request.resource.data.ownerId == request.auth.uid) ||
+        (resource.data.ownerId == request.auth.uid)
+      );
+    }
+
+    // ITEM USAGE COLLECTION
+    match /item_usage/{usageId} {
+      allow read, write: if isAuthenticated() && (
+        isResourceOwner() ||
+        isResourceOwnerField("userId")
+      );
+    }
+
+    // PLAYER BOOSTS COLLECTION
+    match /player_boosts/{boostId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && (
+        isResourceOwner() ||
+        isResourceOwnerField("userId")
+      );
+    }
+
+    // TEAMS COLLECTION (readonly)
+    match /teams/{teamId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // FALLBACK RULE
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

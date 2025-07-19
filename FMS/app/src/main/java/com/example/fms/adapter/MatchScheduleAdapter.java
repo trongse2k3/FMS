@@ -22,6 +22,11 @@ public class MatchScheduleAdapter extends RecyclerView.Adapter<MatchScheduleAdap
         this.matchList = matchList;
     }
 
+    public void setMatchList(List<Match> matchList) {
+        this.matchList = matchList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public MatchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,13 +50,13 @@ public class MatchScheduleAdapter extends RecyclerView.Adapter<MatchScheduleAdap
     public static class MatchViewHolder extends RecyclerView.ViewHolder {
         TextView homeTeamTextView;
         TextView awayTeamTextView;
-        ImageView vsIconImageView; // Nếu có icon VS
+        // ImageView vsIconImageView; // Nếu có icon VS
 
         public MatchViewHolder(@NonNull View itemView) {
             super(itemView);
             homeTeamTextView = itemView.findViewById(R.id.tv_match_home_team);
             awayTeamTextView = itemView.findViewById(R.id.tv_match_away_team);
-            vsIconImageView = itemView.findViewById(R.id.iv_vs_icon); // Ánh xạ icon VS
+            // vsIconImageView = itemView.findViewById(R.id.iv_vs_icon); // Ánh xạ icon VS
         }
     }
 }

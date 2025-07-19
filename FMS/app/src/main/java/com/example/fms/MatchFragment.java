@@ -18,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.example.fms.adapter.MatchScheduleAdapter;
+import com.example.fms.adapter.MatchHistoryAdapter;
 import com.example.fms.model.Match;
+import com.example.fms.firebase.UserManager;
+import com.example.fms.firebase.MatchHistoryManager;
+import com.example.fms.model.MatchResult;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,11 +37,9 @@ public class MatchFragment extends Fragment {
     private ImageView ivHomeTeamLogo;
     private TextView tvAwayTeamName;
     private ImageView ivAwayTeamLogo;
-    private AppCompatButton btnStartMatch;
+    private AppCompatButton btnSimulateMatch;
 
     private RecyclerView rvMatchSchedule;
-    private MatchScheduleAdapter matchScheduleAdapter;
-    private List<Match> matchScheduleList;
 
     // Views cho bảng thông báo trận đấu
     private View matchLogCard;
@@ -54,6 +56,12 @@ public class MatchFragment extends Fragment {
     private int homeScore = 0;
     private int awayScore = 0;
 
+    private FirebaseUser currentUser;
+    private UserManager userManager;
+    private MatchHistoryManager matchHistoryManager;
+    private List<MatchResult> matchResultList;
+    private MatchHistoryAdapter matchHistoryAdapter;
+
     public MatchFragment() {
         // Required empty public constructor
     }
@@ -68,54 +76,33 @@ public class MatchFragment extends Fragment {
         ivHomeTeamLogo = view.findViewById(R.id.iv_home_team_logo);
         tvAwayTeamName = view.findViewById(R.id.tv_away_team_name);
         ivAwayTeamLogo = view.findViewById(R.id.iv_away_team_logo);
-        btnStartMatch = view.findViewById(R.id.btn_start_match);
+        btnSimulateMatch = view.findViewById(R.id.btn_simulate_match);
 
         // Ánh xạ views cho bảng thông báo trận đấu
         matchLogCard = view.findViewById(R.id.match_log_card);
         tvMatchLogDetails = view.findViewById(R.id.tv_match_log_details);
         btnCloseMatchLog = view.findViewById(R.id.btn_close_match_log);
 
-        // Khởi tạo Random
-        random = new Random();
+        // Khởi tạo các manager
+        userManager = new UserManager();
+        matchHistoryManager = new MatchHistoryManager();
+        currentUser = userManager.getCurrentUser();
 
-        // Chuẩn bị danh sách sự kiện trận đấu
-        generalMatchEvents = Arrays.asList(
-                "0': Hai đội nhập cuộc, chờ đợi để thăm dò nhau.",
-                "3': Đội A được hưởng quả phạt sau pha phạm lỗi giữa sân.",
-                "8': Một pha tấn công nguy hiểm của đội B bị chặn đứng.",
-                "15': Đội B phản công nhanh, thủ môn A cản phá xuất sắc.",
-                "22': Trận đấu giằng co, nhiều pha tranh chấp quyết liệt ở giữa sân.",
-                "27': Đội A bỏ lỡ cơ hội ngon ăn trong vòng cấm.",
-                "32': Đội B đã phạt góc, nhưng bị phá ra dễ dàng.",
-                "38': Một pha cứu thua tuyệt vời của thủ môn đội B.",
-                "43': Pha xử lý bóng điêu luyện của tiền vệ đội A."
-        );
+        // Ánh xạ RecyclerView cho lịch thi đấu
+        rvMatchSchedule = view.findViewById(R.id.rv_match_schedule);
+        rvMatchSchedule.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        penaltyEvents = Arrays.asList(
-                "10': Cầu thủ đội A nhận thẻ vàng vì phạm lỗi thô bạo.",
-                "20': Chấn thương bất ngờ! Cầu thủ đội B phải rời sân tạm thời.",
-                "30': Thẻ vàng cho thủ môn đội A vì câu giờ.",
-                "40': Cầu thủ đội B bị truất quyền thi đấu sau pha vào bóng nguy hiểm."
-        );
+        matchResultList = new ArrayList<>();
+        matchHistoryAdapter = new MatchHistoryAdapter(new ArrayList<>()); // Sẽ cập nhật sau
+        rvMatchSchedule.setAdapter(matchHistoryAdapter);
 
-        goalEvents = Arrays.asList(
-                "12': VÀO! Đội A mở tỷ số sau pha phối hợp đẹp mắt!",
-                "25': BÀN THẮNG! Đội B gỡ hòa sau cú sút xa hiểm hóc!",
-                "35': SIÊU PHẨM! Đội A nâng tỷ số lên 2-1 với pha solo đẳng cấp!",
-                "42': BÀN THẮNG! Đội B san bằng tỷ số 2-2 từ chấm phạt đền!"
-        );
+        // Lấy dữ liệu thực tế
+        loadUserMatchHistory();
 
-        // Đặt dữ liệu giả lập cho trận đấu hiện tại
-        tvHomeTeamName.setText("LION KING");
-        ivHomeTeamLogo.setImageResource(R.drawable.img_logo_1);
-        tvAwayTeamName.setText("TOTER HAMBURGER");
-        ivAwayTeamLogo.setImageResource(R.drawable.img_logo_2);
-
-        // Xử lý sự kiện click cho nút START
-        btnStartMatch.setOnClickListener(v -> {
-            homeScore = 0; // Reset tỷ số
-            awayScore = 0;
-            displayMatchLog(); // Hiển thị bảng thông báo trận đấu
+        // Xử lý sự kiện click cho nút SIMULATE MATCH
+        btnSimulateMatch.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), MatchSimulationActivity.class);
+            startActivity(intent);
         });
 
         // Xử lý sự kiện click cho nút Đóng bảng thông báo
@@ -123,22 +110,37 @@ public class MatchFragment extends Fragment {
             matchLogCard.setVisibility(View.GONE); // Ẩn bảng thông báo
         });
 
-        // Ánh xạ RecyclerView cho lịch thi đấu
-        rvMatchSchedule = view.findViewById(R.id.rv_match_schedule);
-        rvMatchSchedule.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Chuẩn bị dữ liệu giả lập cho lịch thi đấu
-        matchScheduleList = new ArrayList<>();
-        matchScheduleList.add(new Match("Toter Hamburger", "Bacelone"));
-        matchScheduleList.add(new Match("Real Madrisss", "Lion King"));
-        matchScheduleList.add(new Match("Livelpool", "Lion King"));
-        matchScheduleList.add(new Match("Lion King", "Manchessty Unatis"));
-        // Thêm các trận đấu khác nếu cần
-
-        matchScheduleAdapter = new MatchScheduleAdapter(matchScheduleList);
-        rvMatchSchedule.setAdapter(matchScheduleAdapter);
-
         return view;
+    }
+
+    private void loadUserMatchHistory() {
+        if (currentUser == null) {
+            Toast.makeText(getContext(), "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String userId = currentUser.getUid();
+        matchHistoryManager.getUserMatchHistory(userId, 20, new MatchHistoryManager.OnMatchHistoryLoadListener() {
+            @Override
+            public void onMatchHistoryLoaded(List<MatchResult> matches) {
+                if (matches == null || matches.isEmpty()) {
+                    Toast.makeText(getContext(), "Chưa có trận đấu nào!", Toast.LENGTH_SHORT).show();
+                    matchHistoryAdapter.setMatchResults(new ArrayList<>());
+                    return;
+                }
+                matchResultList.clear();
+                matchResultList.addAll(matches);
+                matchHistoryAdapter.setMatchResults(matchResultList);
+                // Hiển thị thông tin trận gần nhất
+                MatchResult latest = matches.get(0);
+                tvHomeTeamName.setText(latest.getHomeTeam().getName());
+                tvAwayTeamName.setText(latest.getAwayTeam().getName());
+                // TODO: Cập nhật logo nếu có thông tin logo (nâng cấp sau)
+            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getContext(), "Lỗi tải lịch sử trận đấu: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Phương thức để hiển thị bảng thông báo trận đấu ngẫu nhiên

@@ -42,6 +42,7 @@ public class PlayerDisplayAdapter extends RecyclerView.Adapter<PlayerDisplayAdap
         holder.playerName.setText(player.getName());
         holder.playerOverall.setText("OVR: " + player.getOverall()); // Thêm "OVR:"
         holder.playerPos.setText(player.getPosition());
+        holder.playerPrice.setText(player.getFormattedPrice());
         holder.playerImage.setImageResource(player.getImageResId());
 
         holder.itemView.setOnClickListener(v -> {
@@ -60,6 +61,7 @@ public class PlayerDisplayAdapter extends RecyclerView.Adapter<PlayerDisplayAdap
         TextView playerName;
         TextView playerOverall;
         TextView playerPos;
+        TextView playerPrice;
         ImageView playerImage;
 
         public PlayerDisplayViewHolder(@NonNull View itemView) {
@@ -67,6 +69,7 @@ public class PlayerDisplayAdapter extends RecyclerView.Adapter<PlayerDisplayAdap
             playerName = itemView.findViewById(R.id.player_name);
             playerOverall = itemView.findViewById(R.id.player_overall);
             playerPos = itemView.findViewById(R.id.player_pos);
+            playerPrice = itemView.findViewById(R.id.player_price);
             playerImage = itemView.findViewById(R.id.player_image);
         }
     }

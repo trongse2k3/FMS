@@ -10,6 +10,8 @@
     tools:context=".MainActivity">
 
     <!-- Top Bar -->
+
+    <!-- FragmentContainerView để Navigation Component quản lý các Fragment -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_bar_container"
         android:layout_width="match_parent"
@@ -17,50 +19,80 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/rounded_blue_top_bar"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:elevation="4dp"
         android:paddingVertical="12dp"
-        android:elevation="4dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-    <ImageView
-        android:id="@+id/img_team_logo"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:src="@drawable/logo_1"
-        android:contentDescription="Team Logo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <ImageView
+            android:id="@+id/img_team_logo"
+            android:layout_width="60dp"
+            android:layout_height="51dp"
+            android:contentDescription="Team Logo"
+            android:src="@drawable/logo_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_team_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tên Đội Của Bạn"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginStart="12dp"
-        app:layout_constraintStart_toEndOf="@id/img_team_logo"
-        app:layout_constraintTop_toTopOf="@id/img_team_logo"
-        app:layout_constraintBottom_toBottomOf="@id/img_team_logo" />
 
-    <TextView
-        android:id="@+id/text_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="2000$"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/img_team_logo"
-        app:layout_constraintBottom_toBottomOf="@id/img_team_logo" />
+        <TextView
+            android:id="@+id/text_team_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Tên Đội Của Bạn"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/img_team_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.139"
+            app:layout_constraintStart_toEndOf="@id/img_team_logo"
+            app:layout_constraintTop_toTopOf="@id/img_team_logo"
+            app:layout_constraintVertical_bias="0.407" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2000$"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/img_team_logo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_team_name"
+            app:layout_constraintTop_toTopOf="@id/img_team_logo" />
 
-    <!-- FragmentContainerView để Navigation Component quản lý các Fragment -->
-<androidx.fragment.app.FragmentContainerView
+        <!--    <Button-->
+        <!--        android:id="@+id/btn_test_item"-->
+        <!--        android:layout_width="wrap_content"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:text="Items"-->
+        <!--        android:textSize="10sp"-->
+        <!--        android:backgroundTint="@color/red"-->
+        <!--        android:textColor="@color/white"-->
+        <!--        android:layout_marginEnd="8dp"-->
+        <!--        app:layout_constraintEnd_toStartOf="@+id/btn_logout"-->
+        <!--        app:layout_constraintTop_toTopOf="parent"-->
+        <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+        <!--        -->
+        <!--    <ImageButton-->
+        <!--        android:id="@+id/btn_logout"-->
+        <!--        android:layout_width="36dp"-->
+        <!--        android:layout_height="36dp"-->
+        <!--        android:src="@android:drawable/ic_menu_close_clear_cancel"-->
+        <!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+        <!--        app:tint="@android:color/white"-->
+        <!--        android:contentDescription="Đăng xuất"-->
+        <!--        app:layout_constraintEnd_toEndOf="parent"-->
+        <!--        app:layout_constraintTop_toTopOf="parent"-->
+        <!--        app:layout_constraintBottom_toBottomOf="parent" />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.fragment.app.FragmentContainerView
     android:id="@+id/nav_host_fragment"
     android:name="androidx.navigation.fragment.NavHostFragment"
     android:layout_width="match_parent"
@@ -94,5 +126,7 @@
     app:itemIconTint="@drawable/bottom_nav_color_state_list"
     app:itemTextColor="@drawable/bottom_nav_color_state_list" />
 </com.google.android.material.bottomappbar.BottomAppBar>
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

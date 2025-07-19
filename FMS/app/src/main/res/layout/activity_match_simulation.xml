@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header: Team Names -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/rounded_header_bg"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_home_team"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="My Team"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 - 0"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="#4CAF50"
+                android:padding="8dp"
+                android:layout_marginHorizontal="16dp" />
+
+            <TextView
+                android:id="@+id/tv_away_team"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Opponent"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <!-- Match Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0'"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="#2196F3"
+                android:textColor="#FFFFFF"
+                android:padding="6dp" />
+
+            <TextView
+                android:id="@+id/tv_match_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Chuẩn bị"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginHorizontal="8dp" />
+
+            <TextView
+                android:id="@+id/tv_dice_roll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎲 --"
+                android:textSize="14sp"
+                android:background="#FF9800"
+                android:textColor="#FFFFFF"
+                android:padding="6dp" />
+
+        </LinearLayout>
+
+        <!-- Possession -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#FFFFFF"
+            android:padding="12dp"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kiểm soát bóng:"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_home_possession"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="50%"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="#4CAF50" />
+
+            <TextView
+                android:id="@+id/tv_away_possession"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="50%"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="#F44336" />
+
+        </LinearLayout>
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/pb_match_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:max="100"
+            android:progress="0"
+            android:visibility="gone" />
+
+        <!-- Last Event -->
+        <TextView
+            android:id="@+id/tv_last_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trận đấu sắp bắt đầu..."
+            android:textSize="14sp"
+            android:padding="12dp"
+            android:background="#E8F5E8"
+            android:layout_marginTop="8dp" />
+
+        <!-- Control Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btn_start_match"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Bắt đầu trận đấu"
+                android:background="@drawable/rounded_green_button"
+                android:textColor="#FFFFFF"
+                android:layout_marginEnd="8dp"
+                android:enabled="false" />
+
+            <Button
+                android:id="@+id/btn_quick_simulation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Mô phỏng nhanh"
+                android:background="@drawable/rounded_blue_top_bar"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="8dp"
+                android:enabled="false" />
+
+        </LinearLayout>
+
+        <!-- Events List -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Diễn biến trận đấu:"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_events"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="#FFFFFF"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+</ScrollView> 

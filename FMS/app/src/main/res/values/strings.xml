@@ -2,4 +2,13 @@
     <string name="app_name">FMS</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <!-- Auth strings -->
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="username">Tên người dùng</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="switch_to_register">Chưa có tài khoản? Đăng ký ngay</string>
+    <string name="switch_to_login">Đã có tài khoản? Đăng nhập</string>
 </resources>

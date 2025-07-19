@@ -1,5 +1,6 @@
 package com.example.fms.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fms.R;
 import com.example.fms.model.Player;
+import com.example.fms.model.PlayerStatus;
 
 import java.util.List;
 
@@ -19,20 +21,25 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
 
     private List<Player> playerList;
     private OnAddPlayerClickListener addPlayerClickListener;
+    private OnManagePlayerClickListener managePlayerClickListener;
 
     public interface OnAddPlayerClickListener {
         void onAddPlayerClick(Player player);
     }
 
-    public PlayerBuildAdapter(List<Player> playerList, OnAddPlayerClickListener addPlayerClickListener) {
+    public interface OnManagePlayerClickListener {
+        void onManagePlayerClick(Player player);
+    }
+
+    public PlayerBuildAdapter(List<Player> playerList, OnAddPlayerClickListener addPlayerClickListener, OnManagePlayerClickListener managePlayerClickListener) {
         this.playerList = playerList;
         this.addPlayerClickListener = addPlayerClickListener;
+        this.managePlayerClickListener = managePlayerClickListener;
     }
 
     @NonNull
     @Override
     public PlayerBuildViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate layout player_list_build_item.xml
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.player_list_build_item, parent, false);
         return new PlayerBuildViewHolder(view);
     }
@@ -41,15 +48,38 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
     public void onBindViewHolder(@NonNull PlayerBuildViewHolder holder, int position) {
         Player player = playerList.get(position);
         holder.playerName.setText(player.getName());
-        holder.playerOverall.setText("OVR: " + player.getOverall()); // Thêm "OVR:"
+        holder.playerOverall.setText("OVR: " + player.getOverall());
         holder.playerPos.setText(player.getPosition());
         holder.playerImage.setImageResource(player.getImageResId());
 
-        holder.btnAddPlayer.setOnClickListener(v -> {
-            if (addPlayerClickListener != null) {
-                addPlayerClickListener.onAddPlayerClick(player);
-            }
-        });
+        PlayerStatus status = player.getStatus(); // Giả sử Player có phương thức getStatus()
+
+        if (status != null && !status.isFit()) {
+            // Cầu thủ có vấn đề (chấn thương hoặc treo giò)
+            holder.playerStatus.setVisibility(View.VISIBLE);
+            holder.playerStatus.setText(status.getShortDescription());
+            holder.playerStatus.setTextColor(status.isSuspended() ? Color.RED : Color.MAGENTA);
+
+            holder.btnAddPlayer.setVisibility(View.GONE);
+            holder.btnManagePlayer.setVisibility(View.VISIBLE);
+
+            holder.btnManagePlayer.setOnClickListener(v -> {
+                if (managePlayerClickListener != null) {
+                    managePlayerClickListener.onManagePlayerClick(player);
+                }
+            });
+        } else {
+            // Cầu thủ bình thường
+            holder.playerStatus.setVisibility(View.GONE);
+            holder.btnAddPlayer.setVisibility(View.VISIBLE);
+            holder.btnManagePlayer.setVisibility(View.GONE);
+
+            holder.btnAddPlayer.setOnClickListener(v -> {
+                if (addPlayerClickListener != null) {
+                    addPlayerClickListener.onAddPlayerClick(player);
+                }
+            });
+        }
     }
 
     @Override
@@ -58,19 +88,19 @@ public class PlayerBuildAdapter extends RecyclerView.Adapter<PlayerBuildAdapter.
     }
 
     public static class PlayerBuildViewHolder extends RecyclerView.ViewHolder {
-        TextView playerName;
-        TextView playerOverall;
-        TextView playerPos;
+        TextView playerName, playerOverall, playerPos, playerStatus;
         ImageView playerImage;
-        AppCompatButton btnAddPlayer;
+        AppCompatButton btnAddPlayer, btnManagePlayer;
 
         public PlayerBuildViewHolder(@NonNull View itemView) {
             super(itemView);
             playerName = itemView.findViewById(R.id.player_name);
             playerOverall = itemView.findViewById(R.id.player_overall);
             playerPos = itemView.findViewById(R.id.player_pos);
+            playerStatus = itemView.findViewById(R.id.player_status);
             playerImage = itemView.findViewById(R.id.player_image);
             btnAddPlayer = itemView.findViewById(R.id.btn_add_player);
+            btnManagePlayer = itemView.findViewById(R.id.btn_manage_player);
         }
     }
 }

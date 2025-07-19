@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".FMSApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,11 +14,20 @@
         android:theme="@style/Theme.FMS"
         tools:targetApi="31">
         <activity
+            android:name=".firebase.AuthActivity"
+            android:exported="false">
+
+        </activity>
+        <activity
             android:name=".CreateActivity"
             android:exported="false" />
         <activity
             android:name=".OnBoardingActivity"
-            android:exported="true" >
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,10 +35,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="false" >
+            android:name=".TestMarketActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".TestTeamActivity"
+            android:exported="false">
 
         </activity>
+        <activity
+            android:name=".MatchSimulationActivity"
+            android:exported="false">
+        </activity>
+        
     </application>
 
 </manifest>

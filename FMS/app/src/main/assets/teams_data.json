@@ -1,0 +1,82 @@
+[
+    {
+        "id": 1,
+        "name": "FC Barcelona",
+        "country": "Spain",
+        "logoResId": "logo_1",
+        "rating": 89,
+        "formation": "4-3-3"
+    },
+    {
+        "id": 2,
+        "name": "Real Madrid",
+        "country": "Spain",
+        "logoResId": "img_logo_1",
+        "rating": 91,
+        "formation": "4-4-2"
+    },
+    {
+        "id": 3,
+        "name": "Manchester United",
+        "country": "England",
+        "logoResId": "img_logo_2",
+        "rating": 85,
+        "formation": "4-2-3-1"
+    },
+    {
+        "id": 4,
+        "name": "Liverpool FC",
+        "country": "England",
+        "logoResId": "img_logo_3",
+        "rating": 88,
+        "formation": "4-3-3"
+    },
+    {
+        "id": 5,
+        "name": "Bayern Munich",
+        "country": "Germany",
+        "logoResId": "img_logo_4",
+        "rating": 90,
+        "formation": "4-2-3-1"
+    },
+    {
+        "id": 6,
+        "name": "Paris Saint-Germain",
+        "country": "France",
+        "logoResId": "img_logo_5",
+        "rating": 87,
+        "formation": "4-3-3"
+    },
+    {
+        "id": 7,
+        "name": "Chelsea FC",
+        "country": "England",
+        "logoResId": "img_logo_6",
+        "rating": 84,
+        "formation": "3-5-2"
+    },
+    {
+        "id": 8,
+        "name": "Manchester City",
+        "country": "England",
+        "logoResId": "img_logo_1",
+        "rating": 92,
+        "formation": "4-3-3"
+    },
+    {
+        "id": 9,
+        "name": "Arsenal FC",
+        "country": "England",
+        "logoResId": "img_logo_2",
+        "rating": 83,
+        "formation": "4-4-2"
+    },
+    {
+        "id": 10,
+        "name": "Juventus FC",
+        "country": "Italy",
+        "logoResId": "img_logo_3",
+        "rating": 86,
+        "formation": "3-5-2"
+    }
+]

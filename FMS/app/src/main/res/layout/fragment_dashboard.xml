@@ -11,11 +11,11 @@
     <ImageView
         android:id="@+id/football_field_image"
         android:layout_width="230dp"
-        android:layout_height="140dp"
+        android:layout_height="230dp"
         android:layout_marginTop="140dp"
         android:contentDescription="Football Field"
         android:scaleType="centerCrop"
-        android:src="@drawable/t_svd_1"
+        android:src="@drawable/shop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.088"
         app:layout_constraintStart_toStartOf="parent"
